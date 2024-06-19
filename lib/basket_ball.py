@@ -90,11 +90,11 @@ def game_dict():
                 },
             ],
         },
-            
+
         "away": {
             "team_name": "Washington Wizards",
             "colors": ["Red", "White", "Navy Blue"],
-            "players": [   
+            "players": [
                 {
                     "name": "Bradley Beal",
                     "number": 3,
@@ -182,3 +182,120 @@ def game_dict():
             ]
         }
     }
+
+
+game = game_dict()
+
+
+# get players
+def get_all_players(game):
+    players = []
+    for team in game.values():
+       # team => home and away
+        for player in team["players"]:
+            players.append(player)
+    return players
+
+
+
+def num_points_per_game(player_name):
+    all_players = get_all_players(game)
+    points_per_game = [player["points_per_game"]
+                       for player in all_players if player_name.lower() == player["name"].lower()]
+    return points_per_game[0] if points_per_game else None
+
+
+print(num_points_per_game("Kevin Love"))
+print(num_points_per_game("Kyle Kuzma"))
+
+
+def player_age(player_name):
+    # knows the age of each player
+    # takes player's name as argument
+    # returns that player's age
+    all_players = get_all_players(game)
+    age_per_player = [player["age"]
+                      for player in all_players if player_name.lower() == player["name"].lower()]
+    return age_per_player[0] if age_per_player else None
+
+
+print(player_age("Jarrett Allen"))
+
+
+def team_colors(team_name):
+    # takes team name as argument
+    # returns a list of that team's colors
+    team_colors_all = [team["colors"] for team in game.values(
+    ) if team_name.lower() == team["team_name"].lower()]
+    return team_colors_all[0] if team_colors_all else None
+
+
+print(team_colors("Cleveland Cavaliers"))  # ["Wine", "Gold"]
+
+
+def team_names():
+    # returns a list of the team names
+    return [team["team_name"] for team in game.values()]
+
+
+print(team_names())
+
+
+def player_numbers(team_name):
+    # Takes in team name as argument, returns a list of the jersey numbers for that team
+    for team in game.values():  # Iterate through the teams in the game dictionary
+        # Check if team_name matches (case insensitive)
+        if team["team_name"].lower() == team_name.lower():
+            # Extract jersey numbers of players
+            return [player["number"] for player in team["players"]]
+
+    # If no team with matching team_name is found, return an empty list or handle as needed
+    return []
+
+
+print(player_numbers('Cleveland Cavaliers'))
+
+
+def player_stats(player_name):
+    # returns all stats for a given player
+    # player's name is the arg => returns a dict of player's stats
+    all_players = get_all_players(game)
+    for player in all_players:
+        if player["name"].lower() == player_name.lower():
+            return player
+
+# If player_name is not found, return None
+    return None
+
+
+# print(get_all_players(game))
+# print(player_stats("Jarrett Allen"))
+
+
+def average_rebounds_by_shoe_brand():
+    # return average number of rebounds for players who wear a particular shoe brand
+    # average is a float w 2 decimals
+
+    all_players = get_all_players(game)
+    shoe_brand_rebounds = {}
+    for player in all_players:
+        # {"Nike" : [5.0, 8.1, 4.7]}
+        # add shoe brands and rebounds in a list.
+        if player["shoe_brand"] not in shoe_brand_rebounds:
+            shoe_brand_rebounds[player["shoe_brand"]] = [
+                player["rebounds_per_game"]]
+        else:
+            shoe_brand_rebounds[player["shoe_brand"]].append(
+                player["rebounds_per_game"])
+
+    # average rebounds per shoe brand
+    for shoe_brand, rebounds in shoe_brand_rebounds.items():
+        average_rebounds = sum(rebounds) / len(rebounds)
+        shoe_brand_rebounds[shoe_brand] = "{:.2f}".format(
+            average_rebounds)  # 2 decimal points
+
+    for brand, average in shoe_brand_rebounds.items():
+        print(f"{brand}:  {average}")
+
+
+print(average_rebounds_by_shoe_brand())

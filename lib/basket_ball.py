@@ -299,3 +299,47 @@ def average_rebounds_by_shoe_brand():
 
 
 print(average_rebounds_by_shoe_brand())
+
+
+# Which player has the most career points?
+
+#iterate over the dictionary to compare career points, return the maximum
+
+def get_max_point():
+    all_players = get_all_players(game)
+    max_player = max(all_players, key=lambda player: player["career_points"])
+    return max_player["name"]
+
+print(get_max_point())  # Kevin Love
+
+# Are there any jersey numbers that are worn by players on both teams?
+
+#iterate through the players to find numbers that are used more than once
+# check both teams for same numbers if any exists
+# if exists , return the number
+# else, return no matching number found
+
+def jersey_numbers():
+    all_players = get_all_players(game)
+    jersey_numbers = []
+    for player in all_players:
+        if player["number"] not in jersey_numbers:
+            jersey_numbers.append(player["number"])
+
+    for number in jersey_numbers:
+        if jersey_numbers.count(number) > 1:
+            return number
+        else:
+            return "No matching number found"
+
+print(jersey_numbers())
+
+
+# Which player has the longest name?
+
+def find_longest_name():
+    all_players = get_all_players(game)
+    longest_name = max(all_players, key=lambda player: len(player["name"]))
+    return longest_name["name"]
+
+print(find_longest_name())  # Kentavious Caldwell-Pope
